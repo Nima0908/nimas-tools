@@ -38,8 +38,6 @@ RDEPEND="
 	nocache? ( sys-fs/nocache )
 "
 
-S="${WORKDIR}"
-
 src_install() {
 	# Install the main script
 	dobin genup || die "Failed to install genup script"
