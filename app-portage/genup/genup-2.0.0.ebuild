@@ -40,11 +40,6 @@ RDEPEND="
 
 S="${WORKDIR}"
 
-src_unpack() {
-	# We install from the current directory where the script is located
-	cp "${DISTDIR}"/genup "${WORKDIR}"/genup || die "Failed to copy genup script"
-}
-
 src_install() {
 	# Install the main script
 	dobin genup || die "Failed to install genup script"
