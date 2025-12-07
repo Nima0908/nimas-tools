@@ -57,9 +57,6 @@ src_install() {
 	# Create updaters.d directory
 	keepdir /etc/genup/updaters.d
 	fperms 755 /etc/genup/updaters.d
-
-	# Install docs
-	dodoc README.md CHANGELOG.md || die "Failed to install docs"
 }
 
 pkg_preinst() {
