@@ -38,20 +38,19 @@ RDEPEND="
 	nocache? ( sys-fs/nocache )
 "
 
+S="${WORKDIR}/${PN}"
+
 src_install() {
 	# Install the main script
 	dobin genup || die "Failed to install genup script"
 
-	# Set proper permissions
-	fperms +x /usr/bin/genup
-
 	# Install man page
 	doman genup.1 || die "Failed to install man page"
 
-	# Install bash completion
+	# Install bash completion (from FILESDIR as you intended)
 	newbashcomp "${FILESDIR}"/genup.bash genup || die "Failed to install bash completion"
 
-	# Install configuration directory
+	# Install configuration
 	insinto /etc/genup
 	doins "${FILESDIR}"/genup.conf || die "Failed to install configuration"
 
@@ -60,12 +59,10 @@ src_install() {
 	fperms 755 /etc/genup/updaters.d
 
 	# Install docs
-	dodoc README.md || die "Failed to install README"
-	dodoc CHANGELOG.md || die "Failed to install CHANGELOG"
+	dodoc README.md CHANGELOG.md || die "Failed to install docs"
 }
 
 pkg_preinst() {
-	# Check for old version and migrate configuration if needed
 	if [[ -f "${EROOT}"/etc/genup.conf ]]; then
 		if [[ ! -f "${EROOT}"/etc/genup/genup.conf ]]; then
 			cp "${EROOT}"/etc/genup.conf "${EROOT}"/etc/genup/genup.conf
@@ -74,7 +71,6 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	# Post-installation setup
 	elog ""
 	elog "Gentoo System Updater (genup) has been successfully installed!"
 	elog ""
@@ -86,52 +82,44 @@ pkg_postinst() {
 	elog "  - Custom updater support via /etc/genup/updaters.d"
 	elog ""
 	elog "Basic Usage:"
-	elog "  genup                    # Run a complete system update"
-	elog "  genup --ask              # Interactive mode with confirmations"
-	elog "  genup --help             # Show all available options"
-	elog ""
-	elog "Configuration:"
-	elog "  - Main config: /etc/genup/genup.conf"
-	elog "  - Custom updaters: /etc/genup/updaters.d/"
+	elog "  genup"
+	elog "  genup --ask"
+	elog "  genup --help"
 	elog ""
 
-	# Enable/disable USE flags based configuration
 	if use buildkernel; then
-		elog "Kernel update support is enabled via USE flag"
+		elog "Kernel update support is enabled"
 	else
-		elog "Kernel update support is disabled (set USE=buildkernel to enable)"
+		elog "Kernel update support is disabled"
 	fi
 
 	if use emtee; then
-		elog "emtee support is enabled via USE flag"
+		elog "emtee support is enabled"
 	else
-		elog "emtee support is disabled (set USE=emtee to enable)"
+		elog "emtee support is disabled"
 	fi
 
 	if use pgmerge; then
-		elog "pgmerge support is enabled via USE flag"
+		elog "pgmerge support is enabled"
 	else
-		elog "pgmerge support is disabled (set USE=pgmerge to enable)"
+		elog "pgmerge support is disabled"
 	fi
 
 	if use nocache; then
-		elog "nocache support is enabled via USE flag"
+		elog "nocache support is enabled"
 	else
-		elog "nocache support is disabled (set USE=nocache to enable)"
+		elog "nocache support is disabled"
 	fi
 
 	elog ""
-	elog "For more information, see the man page: man genup"
+	elog "For more information, see: man genup"
 	elog ""
 }
 
 pkg_prerm() {
-	# Clean up configuration on removal if user chooses
 	if [[ -f "${EROOT}"/etc/genup/genup.conf ]]; then
 		ewarn "Configuration file found at ${EROOT}/etc/genup/genup.conf"
 		ewarn "This file will be preserved. Remove manually if not needed."
 	fi
 }
 
-# This is a live ebuild that installs from the current directory
-# The actual file is copied during src_unpack phase
