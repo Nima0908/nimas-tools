@@ -6,7 +6,7 @@ EAPI=8
 inherit bash-completion-r1
 
 DESCRIPTION="Gentoo System Updater - Automated system update script"
-HOMEPAGE="https://github.com/minimax/genup"
+HOMEPAGE="https://github.com/Nima0908/genup"
 SRC_URI=""
 
 LICENSE="GPL-3"
