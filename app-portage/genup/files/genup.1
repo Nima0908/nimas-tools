@@ -1,0 +1,192 @@
+.TH GENUP 1 "December 2025" "Gentoo System Updater" "User Commands"
+.SH NAME
+genup \- Gentoo System Updater
+.SH SYNOPSIS
+.B genup
+.RI [ options ]
+.SH DESCRIPTION
+.B genup
+is a comprehensive system update tool for Gentoo Linux that automates the entire
+process of updating your system, including:
+.PP
+.IP \(bu 2
+Synchronizing the Portage tree and eix cache
+.IP \(bu 2
+Updating all packages in the @world set
+.IP \(bu 2
+Handling configuration file conflicts with dispatch\-conf
+.IP \(bu 2
+Rebuilding external kernel modules
+.IP \(bu 2
+Updating kernel (with buildkernel support)
+.IP \(bu 2
+Cleaning up orphaned packages and old source files
+.IP \(bu 2
+Running custom updater scripts
+.PP
+The script is designed to be run interactively but can also operate in automated
+mode with appropriate command line options.
+.SH OPTIONS
+.TP
+.B \-a, \-\-ask
+Turn on interactive mode: require user confirmation for key actions.
+.TP
+.B \-A, \-\-alert
+Sound terminal bell when interaction is required. Automatically enables \-\-ask.
+.TP
+.B \-b, \-\-buildkernel\-args=\fIARGS\fR
+Pass additional arguments to the initial buildkernel invocation (requires
+buildkernel USE flag).
+.TP
+.B \-c, \-\-dispatch\-conf
+Run dispatch\-conf even in non\-interactive mode.
+.TP
+.B \-C, \-\-no\-custom\-updaters
+Do not run custom updaters from /etc/genup/updaters.d directory.
+.TP
+.B \-d, \-\-deploy\-from\-staging
+If a kernel is built successfully, deploy it to the EFI system partition
+(requires buildkernel USE flag).
+.TP
+.B \-e, \-\-emerge\-args=\fIARGS\fR
+Pass additional arguments to the main emerge command.
+.TP
+.B \-E, \-\-no\-emtee
+Do not attempt to use emtee even when the emtee USE flag is enabled.
+.TP
+.B \-g, \-\-pgmerge
+Try to use pgmerge for updates (experimental feature).
+.TP
+.B \-F, \-\-no\-fixups
+Do not run /etc/cron.weekly/fixup script (aarch64 systems only).
+.TP
+.B \-h, \-\-help
+Display help message and exit.
+.TP
+.B \-i, \-\-ignore\-required\-changes
+Do not exit with error if user configuration changes are required.
+.TP
+.B \-k, \-\-keep\-old\-distfiles
+Do not purge old source tarballs (distfiles).
+.TP
+.B \-m, \-\-no\-eix\-metadata\-update
+Do not update eix metadata at completion.
+.TP
+.B \-M, \-\-no\-module\-rebuild
+Do not rebuild external modules.
+.TP
+.B \-n, \-\-no\-kernel\-upgrade
+Do not attempt kernel upgrades (implied if buildkernel USE flag not set).
+.TP
+.B \-N, \-\-no\-nocache
+Do not use nocache even when nocache USE flag is enabled.
+.TP
+.B \-p, \-\-no\-perl\-cleaner
+Do not run perl\-cleaner.
+.TP
+.B \-r, \-\-adjustment=\fIN\fR
+Set build niceness adjustment (-20 to 19, default: 19).
+.TP
+.B \-S, \-\-no\-eix\-sync
+Do not run emaint sync or eix\-sync.
+.TP
+.B \-v, \-\-verbose
+Display more detailed information.
+.TP
+.B \-V, \-\-version
+Display version number and exit.
+.TP
+.B \-x, \-\-eix\-sync\-args=\fIARGS\fR
+Pass additional arguments to eix\-sync.
+.SH CONFIGURATION
+.PP
+The behavior of genup can be customized through configuration files:
+.PP
+.I /etc/genup/genup.conf
+.RS
+Main configuration file with default settings.
+.RE
+.PP
+.I /etc/genup/updaters.d/
+.RS
+Directory containing custom updater scripts that are executed after
+system updates complete.
+.RE
+.SH USE FLAGS
+.PP
+The following USE flags can be set when emerging genup:
+.TP
+.B buildkernel
+Enable kernel update support using buildkernel tool.
+.TP
+.B emtee
+Enable support for the emtee package manager tool.
+.TP
+.B pgmerge
+Enable support for the pgmerge package manager tool (experimental).
+.TP
+.B nocache
+Enable support for the nocache filesystem caching tool.
+.SH EXAMPLES
+.PP
+Basic system update:
+.RS
+.B genup
+.RE
+.PP
+Interactive system update with confirmations:
+.RS
+.B genup \-\-ask
+.RE
+.PP
+System update with verbose output:
+.RS
+.B genup \-\-verbose
+.RE
+.PP
+Update with custom emerge arguments:
+.RS
+.B genup \-\-emerge\-args="--autounmask-write"
+.RE
+.PP
+Update without kernel upgrade:
+.RS
+.B genup \-\-no\-kernel\-upgrade
+.RE
+.SH ENVIRONMENT VARIABLES
+.TP
+.B TERM
+Terminal type for color output and terminal control sequences.
+.SH FILES
+.TP
+.I /etc/genup/genup.conf
+Main configuration file.
+.TP
+.I /etc/genup/updaters.d/
+Directory for custom updater scripts.
+.TP
+.I /etc/portage/postsync.d/eix
+Portage postsync hook for eix updates (if eix version >= 0.36.7\-r2).
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion.
+.TP
+.B 1
+Error occurred during execution.
+.SH SEE ALSO
+.PP
+.BR emerge (1),
+.BR eix (1),
+.BR dispatch\-conf (8),
+.BR buildkernel (8),
+.BR emtee (1),
+.BR pgmerge (1)
+.PP
+Gentoo Handbook: https://wiki.gentoo.org/wiki/Handbook
+.SH AUTHOR
+MiniMax Agent <agent@minimax.com>
+.PP
+Based on original work by sakaki <sakaki@deciban.com>
+.SH LICENSE
+GPL v3.0 - See the source code for details.
