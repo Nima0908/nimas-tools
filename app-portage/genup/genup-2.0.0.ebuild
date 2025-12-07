@@ -7,7 +7,7 @@ inherit bash-completion-r1
 
 DESCRIPTION="Gentoo System Updater - Automated system update script"
 HOMEPAGE="https://github.com/Nima0908/genup"
-SRC_URI=""
+SRC_URI="https://github.com/Nima0908/genup/releases/download/${PV}/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
