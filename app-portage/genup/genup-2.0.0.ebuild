@@ -30,7 +30,7 @@ RDEPEND="
 	>=sys-apps/util-linux-2.0
 	>=app-admin/eselect-1.4.0
 	>=sys-devel/gcc-8.0
-	>=sys-apps/gentoolkit-0.5.0
+	>=app-portage/gentoolkit-0.5.0
 	>=app-portage/portage-utils-0.80
 	buildkernel? ( sys-kernel/buildkernel )
 	emtee? ( app-portage/emtee )
