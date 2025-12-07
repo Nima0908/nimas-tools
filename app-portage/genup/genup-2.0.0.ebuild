@@ -45,7 +45,7 @@ src_install() {
 	dobin genup || die "Failed to install genup script"
 
 	# Install man page
-	doman genup.1 || die "Failed to install man page"
+	doman "${FILESDIR}"/genup.1 || die "Failed to install man page"
 
 	# Install bash completion (from FILESDIR as you intended)
 	newbashcomp "${FILESDIR}"/genup.bash genup || die "Failed to install bash completion"
