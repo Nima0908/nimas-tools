@@ -13,7 +13,7 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86 ~arm64"
 
-IUSE="buildkernel emtee pgmerge nocache"
+IUSE="buildkernel emtee pmerge nocache"
 
 DEPEND="
 	>=sys-apps/portage-3.0.0
@@ -34,7 +34,7 @@ RDEPEND="
 	>=app-portage/portage-utils-0.80
 	buildkernel? ( sys-kernel/buildkernel )
 	emtee? ( app-portage/emtee )
-	pgmerge? ( app-portage/pgmerge )
+	pmerge? ( sys-apps/pkgcore )
 	nocache? ( sys-fs/nocache )
 "
 
@@ -96,10 +96,10 @@ pkg_postinst() {
 		elog "emtee support is disabled"
 	fi
 
-	if use pgmerge; then
-		elog "pgmerge support is enabled"
+	if use pmerge; then
+		elog "pmerge support is enabled"
 	else
-		elog "pgmerge support is disabled"
+		elog "pmerge support is disabled"
 	fi
 
 	if use nocache; then
